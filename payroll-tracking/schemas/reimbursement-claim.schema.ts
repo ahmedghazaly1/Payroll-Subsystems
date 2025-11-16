@@ -5,37 +5,39 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema'; // if available
-// import { UserDocument } from '../../auth/schemas/user.schema'; // optional
+// import { EmployeeDocument } from '../../employee/schemas/employee.schema'; // Employee Profile subsystem
+// import { UserDocument } from '../../auth/schemas/user.schema';             // Auth / Users subsystem
 
 export type ReimbursementClaimDocument = ReimbursementClaim & Document;
 
 @Schema({ timestamps: true })
 export class ReimbursementClaim {
   // ------------------------------------------------------------
-  // EMPLOYEE (REFERENCE)
+  // EMPLOYEE (SELF-SERVICE) – DEPENDENCIES COMMENTED
   // ------------------------------------------------------------
 
-  /*@Prop({
+  /*
+  @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee',
     required: true,
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | any; // EmployeeDocument if you add it later
-*/
+    | EmployeeDocument; // Employee Profile subsystem
 
-/*
   @Prop({ required: true })
-  employeeName: string; // denormalized for quick UI lookup
+  employeeName: string; // snapshot from Employee Profile
+  */
 
   // ------------------------------------------------------------
   // CLAIM INFO
   // ------------------------------------------------------------
-*/
+
   @Prop({ required: true })
-  claimType: string; // e.g., "travel", "medical"
+  claimType: string;
+  // e.g., "travel", "training", "medical"
+  // Allowed values will be defined in Payroll Configuration & Policy Setup
 
   @Prop({ required: true })
   amount: number;
@@ -64,13 +66,15 @@ export class ReimbursementClaim {
     | 'approved'
     | 'rejected';
 
+  /*
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   })
   reviewedBy?:
     | mongoose.Types.ObjectId
-    | any; // UserDocument if available
+    | UserDocument; // Payroll Specialist / Manager / Finance
+  */
 
   @Prop()
   reviewComment?: string;
@@ -80,7 +84,7 @@ export class ReimbursementClaim {
   // ------------------------------------------------------------
 
   @Prop({ default: false })
-  isRefundProcessed: boolean;
+  isRefundProcessed: boolean; // becomes true when refund is included in some payroll run
 
   @Prop()
   refundProcessedAt?: Date;
@@ -91,7 +95,7 @@ export class ReimbursementClaim {
   })
   refundPayrollRunId?:
     | mongoose.Types.ObjectId
-    | PayrollRunDocument;
+    | PayrollRunDocument; // Payroll Processing & Execution subSystem
 }
 
 export const ReimbursementClaimSchema =
