@@ -6,16 +6,15 @@ import * as mongoose from 'mongoose';
 
 import { PayslipDocument } from './payslip.schema';
 import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
-// import { UserDocument } from '../../auth/schemas/user.schema'; // if you have it
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema'; // if needed
+// import { UserDocument } from '../../auth/schemas/user.schema';              // Auth / Users subsystem
+// import { EmployeeDocument } from '../../employee/schemas/employee.schema';  // Employee Profile subsystem
 
 export type PayrollDisputeDocument = PayrollDispute & Document;
 
 @Schema({ timestamps: true })
 export class PayrollDispute {
   // ------------------------------------------------------------
-  // (Optional) Employee ref — you commented it out but I’ll keep
-  // the converted version here in case you want it later:
+  // CROSS-SUBSYSTEM FIELDS (COMMENTED FOR NOW)
   // ------------------------------------------------------------
 
   /*
@@ -26,10 +25,10 @@ export class PayrollDispute {
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | EmployeeDocument;
+    | EmployeeDocument; // Employee Profile subsystem
 
   @Prop({ required: true })
-  employeeName: string;
+  employeeName: string; // snapshot from Employee Profile
   */
 
   // ------------------------------------------------------------
@@ -43,7 +42,7 @@ export class PayrollDispute {
   })
   payslipId:
     | mongoose.Types.ObjectId
-    | PayslipDocument;
+    | PayslipDocument; // from Payroll Tracking (Payslip)
 
   // ------------------------------------------------------------
   // SNAPSHOT DATA
@@ -108,13 +107,15 @@ export class PayrollDispute {
     | 'approved'
     | 'rejected';
 
+  /*
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   })
   reviewedBy?:
     | mongoose.Types.ObjectId
-    | any; // UserDocument
+    | UserDocument; // Payroll Specialist / Payroll Manager / Finance
+  */
 
   @Prop()
   reviewComment?: string;
@@ -124,10 +125,10 @@ export class PayrollDispute {
   // ------------------------------------------------------------
 
   @Prop({ default: false })
-  isRefundRequired: boolean;
+  isRefundRequired: boolean; // if approved and needs correction in next run
 
   @Prop({ default: false })
-  isRefundProcessed: boolean;
+  isRefundProcessed: boolean; // becomes true when included in some PayrollRun
 
   @Prop()
   refundProcessedAt?: Date;
@@ -138,7 +139,7 @@ export class PayrollDispute {
   })
   refundPayrollRunId?:
     | mongoose.Types.ObjectId
-    | PayrollRunDocument;
+    | PayrollRunDocument; // Payroll Processing & Execution subSystem
 }
 
 export const PayrollDisputeSchema =
