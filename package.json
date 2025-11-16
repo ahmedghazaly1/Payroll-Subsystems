@@ -1,4 +1,12 @@
 {
+  "dependencies": {
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/mongoose": "^11.0.3",
+    "mongoose": "^8.19.4"
+  }
+}
+
+{
   "name": "payroll-subsystems",
   "version": "0.0.1",
   "description": "Payroll Subsystems NestJS Application",
