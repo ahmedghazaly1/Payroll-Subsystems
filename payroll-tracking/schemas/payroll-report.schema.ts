@@ -5,8 +5,8 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
-// import { DepartmentDocument } from '../../org-structure/schemas/department.schema'; // Organization Structure
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema';         // Employee Profile
+import { OrganizationStructureModule } from '../organization-structure/organization-structure.module';  // Organization Structure
+import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';  // Employee Profile subsystem
 
 export type PayrollReportDocument = PayrollReport & Document;
 
@@ -35,14 +35,14 @@ export class PayrollReport {
   scope?: 'company' | 'department' | 'employee';
   // REQ-PY-29 company summaries, REQ-PY-38 department reports, REQ-PY-25 tax/insurance/benefits reports
 
-  /*
+  
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department',
   })
   departmentId?:
     | mongoose.Types.ObjectId
-    | DepartmentDocument; // Org Structure subsystem
+    | OrganizationStructureModule; // Org Structure subsystem
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -50,8 +50,8 @@ export class PayrollReport {
   })
   employeeId?:
     | mongoose.Types.ObjectId
-    | EmployeeDocument; // Employee Profile subsystem
-  */
+    | EmployeeProfileModule; // Employee Profile subsystem
+  
 
   // Flexible JSON snapshot (aggregated totals, charts, etc.)
   @Prop({ type: Object })
