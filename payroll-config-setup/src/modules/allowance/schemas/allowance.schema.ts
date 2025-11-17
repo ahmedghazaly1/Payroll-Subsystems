@@ -28,6 +28,18 @@ export class Allowance {
 
   @Prop({ default: true })
   isActive: boolean;
+
+  @Prop({ required: true, enum: ['DRAFT', 'PENDING', 'APPROVED', 'REJECTED'], default: 'DRAFT' })
+  status: string;
+
+  @Prop({ required: true, enum: ['PENDING', 'APPROVED', 'REJECTED'], default: 'PENDING' })
+  approvalStatus: string;
+
+  @Prop()
+  approvedBy: string; // Payroll Manager
+
+  @Prop()
+  createdBy: string; // System Admin
 }
 
 export const AllowanceSchema = SchemaFactory.createForClass(Allowance);
