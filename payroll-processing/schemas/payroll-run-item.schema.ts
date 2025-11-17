@@ -17,11 +17,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import { PayGradeDocument } from '../../payroll-config/schemas/pay-grade.schema';
+import { PayGradeDocument } from '../../payroll-config-setup/src/modules/pay-grade/schemas/pay-grade.schema';
 import { PayrollRunDocument } from './payroll-run.schema';
 // If you have EmployeeDocument / DepartmentDocument / PositionDocument in other modules:
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema';
-// import { DepartmentDocument } from '../../org-structure/schemas/department.schema';
+import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';
+import { OrganizationStructureModule } from '../organization-structure/organization-structure.module';
 // import { PositionDocument } from '../../org-structure/schemas/position.schema';
 
 export type PayrollRunItemDocument = PayrollRunItem & Document;
@@ -46,7 +46,7 @@ export class PayrollRunItem {
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | any; // EmployeeDocument if you have it (from Employee Profile subsystem)
+    | EmployeeProfileModule; // EmployeeDocument if you have it (from Employee Profile subsystem)
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -63,7 +63,7 @@ export class PayrollRunItem {
   })
   departmentId:
     | mongoose.Types.ObjectId
-    | any; // DepartmentDocument from Org Structure subsystem
+    | OrganizationStructureModule; // DepartmentDocument from Org Structure subsystem
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -71,7 +71,7 @@ export class PayrollRunItem {
   })
   positionId:
     | mongoose.Types.ObjectId
-    | any; // PositionDocument from Org Structure subsystem
+    | OrganizationStructureModule; // PositionDocument from Org Structure subsystem
 
   // ------- SNAPSHOTTED NUMBERS (not refs) -------
 
