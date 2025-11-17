@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Payslip, PayslipSchema } from '../payroll-processing/schemas/payslip.schema';
 import {
   PayrollDispute,
   PayrollDisputeSchema,
@@ -29,3 +28,4 @@ import { PayrollTrackingController } from './payroll-tracking.controller';
   exports: [MongooseModule, PayrollTrackingService],
 })
 export class PayrollTrackingModule {}
+
