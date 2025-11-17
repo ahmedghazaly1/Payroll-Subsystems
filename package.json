@@ -1,7 +1,33 @@
 {
+  "name": "payroll-subsystems",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedghazaly1/Payroll-Subsystems.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahmedghazaly1/Payroll-Subsystems/issues"
+  },
+  "homepage": "https://github.com/ahmedghazaly1/Payroll-Subsystems#readme",
   "dependencies": {
-    "@nestjs/config": "^4.0.2",
+    "@nestjs/common": "^11.1.9",
+    "@nestjs/core": "^11.1.9",
     "@nestjs/mongoose": "^11.0.3",
-    "mongoose": "^8.19.4"
+    "mongoose": "^8.19.4",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }
