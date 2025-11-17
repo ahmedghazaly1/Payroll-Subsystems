@@ -4,10 +4,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import { PayslipDocument } from './payslip.schema';
+import { PayslipDocument } from '../../payroll-processing/schemas/payslip.schema';
 import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
 // import { UserDocument } from '../../auth/schemas/user.schema';              // Auth / Users subsystem
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema';  // Employee Profile subsystem
+import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';  // Employee Profile subsystem
 
 export type PayrollDisputeDocument = PayrollDispute & Document;
 
@@ -17,7 +17,7 @@ export class PayrollDispute {
   // CROSS-SUBSYSTEM FIELDS (COMMENTED FOR NOW)
   // ------------------------------------------------------------
 
-  /*
+  
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee',
@@ -25,11 +25,11 @@ export class PayrollDispute {
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | EmployeeDocument; // Employee Profile subsystem
+    | EmployeeProfileModule; // Employee Profile subsystem
 
   @Prop({ required: true })
   employeeName: string; // snapshot from Employee Profile
-  */
+  
 
   // ------------------------------------------------------------
   // REQUIRED REFERENCES
