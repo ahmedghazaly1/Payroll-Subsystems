@@ -28,6 +28,21 @@ export class TaxRule {
 
   @Prop({ default: true })
   isActive: boolean;
+
+  @Prop({ required: true, enum: ['DRAFT', 'PENDING', 'APPROVED', 'REJECTED'], default: 'DRAFT' })
+  status: string;
+
+  @Prop({ required: true, enum: ['PENDING', 'APPROVED', 'REJECTED'], default: 'PENDING' })
+  approvalStatus: string;
+
+  @Prop()
+  approvedBy: string; // Payroll Manager or HR Manager
+
+  @Prop()
+  createdBy: string; // System Admin
+
+  @Prop()
+  lastUpdatedBy: string; // For legal rules updates
 }
 
 export const TaxRuleSchema = SchemaFactory.createForClass(TaxRule);
