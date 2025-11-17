@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema';
+ import { EmployeeDocument } from '../../employee/schemas/employee.schema';
 
 export type PayslipDocument = Payslip & Document;
 
