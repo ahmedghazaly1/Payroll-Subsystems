@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Payslip, PayslipSchema } from '../payroll-processing/schemas/payslip.schema';
+
 import {
   PayrollPeriod,
   PayrollPeriodSchema,
