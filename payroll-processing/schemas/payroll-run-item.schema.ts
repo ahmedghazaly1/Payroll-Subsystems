@@ -1,9 +1,23 @@
+/*From the project requirements, it’s nice (but not absolutely mandatory) to distinguish:
+
+configured deductions (tax, insurance, social, etc.)
+
+“penalties” (late, missing hours, unpaid leave)
+/*  
+
+/*@Prop({ default: 0 })
+taxAmount: number;
+
+@Prop({ default: 0 })
+insuranceAmount: number;
+*/
+
 // src/payroll-processing/schemas/payroll-run-item.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-//import { PayGradeDocument } from '../../payroll-config/schemas/pay-grade.schema';
+import { PayGradeDocument } from '../../payroll-config/schemas/pay-grade.schema';
 import { PayrollRunDocument } from './payroll-run.schema';
 // If you have EmployeeDocument / DepartmentDocument / PositionDocument in other modules:
 // import { EmployeeDocument } from '../../employee/schemas/employee.schema';
@@ -34,7 +48,7 @@ export class PayrollRunItem {
     | mongoose.Types.ObjectId
     | any; // EmployeeDocument if you have it (from Employee Profile subsystem)
 
-  /*@Prop({
+  @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PayGrade',
     required: true,
@@ -42,7 +56,7 @@ export class PayrollRunItem {
   payGradeId:
     | mongoose.Types.ObjectId
     | PayGradeDocument; // from Payroll Configuration & Policy Setup
-*/
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department',
@@ -154,3 +168,4 @@ export class PayrollRunItem {
 
 export const PayrollRunItemSchema =
   SchemaFactory.createForClass(PayrollRunItem);
+
