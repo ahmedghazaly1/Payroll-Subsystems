@@ -21,7 +21,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 import { PayrollPeriodDocument } from './payroll-period.schema';
-// import { UserDocument } from '../../auth/schemas/user.schema'; // if you have it
+import { UserDocument } from '../../auth/schemas/user.schema'; // if you have it
 
 export type PayrollRunDocument = PayrollRun & Document;
 
