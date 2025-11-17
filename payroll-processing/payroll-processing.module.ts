@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Payslip, PayslipSchema } from '../payroll-processing/schemas/payslip.schema';
+import { Payslip, PayslipSchema } from './schemas/payslip.schema';
 
 import {
   PayrollPeriod,
@@ -10,7 +10,7 @@ import { PayrollRun, PayrollRunSchema } from './schemas/payroll-run.schema';
 import {
   PayrollRunItem,
   PayrollRunItemSchema,
-} from './schemas/payroll-run-item.schema.ts';
+} from './schemas/payroll-run-item.schema';
 import {
   EmployeeBankInfo,
   EmployeeBankInfoSchema,
@@ -23,6 +23,7 @@ import {
       { name: PayrollRun.name, schema: PayrollRunSchema },
       { name: PayrollRunItem.name, schema: PayrollRunItemSchema },
       { name: EmployeeBankInfo.name, schema: EmployeeBankInfoSchema },
+      { name: Payslip.name, schema: PayslipSchema }
     ]),
   ],
   exports: [MongooseModule],
