@@ -1,95 +1,145 @@
-// src/payroll-processing/schemas/payslip.schema.ts
+// SubSystem: Payroll Tracking, Transparency & Employee Self-Service
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-// import { EmployeeDocument } from '../../employee/schemas/employee.schema';
+import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
+import { PayrollRunItemDocument } from '../../payroll-processing/schemas/payroll-run-item.schema';
+import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';
 
 export type PayslipDocument = Payslip & Document;
 
 @Schema({ timestamps: true })
 export class Payslip {
-  @Prop({ required: true, unique: true })
-  payslipNumber: string; // e.g. "2025-10-EMP001"
+  // ------------------------------------------------------------
+  // CROSS-SUBSYSTEM DEPENDENCIES (COMMENTED FOR NOW)
+  // ------------------------------------------------------------
 
+  
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee',
     required: true,
   })
-  employeeId: mongoose.Types.ObjectId | any; // from Employee Profile
+  employeeId:
+    | mongoose.Types.ObjectId
+    | EmployeeProfileModule; // Employee Profile subsystem
+
+  @Prop({ required: true })
+  employeeName: string; // snapshot from Employee Profile
+  
+
+  // ------------------------------------------------------------
+  // LINKS INSIDE PAYROLL SUBSYSTEMS
+  // ------------------------------------------------------------
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PayrollRun',
     required: true,
   })
-  payrollRunId: mongoose.Types.ObjectId | any; // from Payroll Processing
-
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'PayrollPeriod',
-    required: true,
-  })
-  payrollPeriodId: mongoose.Types.ObjectId | any; // from Payroll Processing
+  payrollRunId:
+    | mongoose.Types.ObjectId
+    | PayrollRunDocument; // Payroll Processing & Execution subSystem
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PayrollRunItem',
     required: true,
   })
-  payrollRunItemId: mongoose.Types.ObjectId | any; // from Payroll Processing
+  payrollRunItemId:
+    | mongoose.Types.ObjectId
+    | PayrollRunItemDocument; // Payroll Processing & Execution subSystem
 
-  // snapshot info to make the payslip self-contained
+  // ------------------------------------------------------------
+  // SNAPSHOT FIELDS (Stored permanently for history)
+  // ------------------------------------------------------------
+
+  @Prop({ required: true })
+  periodCode: string; // e.g. "2025-10"
+
+  @Prop({ required: true })
+  baseSalary: number;
+  // from PayGrade (Payroll Configuration & Policy Setup subSystem)
+
+  @Prop({ required: true })
+  grossSalary: number; // after allowances, before deductions
+
+  @Prop({ required: true })
+  totalAllowances: number; // total of all positive components
+
+  @Prop({ required: true })
+  totalDeductions: number; // total of all negative components (tax, insurance, penalties, etc.)
+
+  @Prop({ required: true })
+  finalNetSalary: number; // what the employee actually gets paid
+
+  // Optional helper snapshots for transparency (still within Payroll responsibility):
+
   @Prop()
-  employeeCode?: string;
+  taxAmount?: number; 
+  // derived from tax components (uses tax rules from Payroll Configuration)
 
   @Prop()
-  employeeName?: string;
+  insuranceAmount?: number; 
+  // derived from insurance components (uses insurance rules from Payroll Configuration)
 
   @Prop()
-  departmentName?: string;
+  leaveEncashmentAmount?: number; 
+  // derived from components originating from Leaves subsystem
 
   @Prop()
-  positionName?: string;
+  unpaidLeaveDeductionAmount?: number; 
+  // derived from components originating from Leaves subsystem
 
-  // amounts
-  @Prop({ default: 0 })
-  grossSalary: number;
+  @Prop()
+  misconductDeductionAmount?: number; 
+  // derived from components originating from Time Management subsystem
 
-  @Prop({ default: 0 })
-  totalAllowances: number;
+  // ------------------------------------------------------------
+  // ITEMIZED BREAKDOWN
+  // ------------------------------------------------------------
 
-  @Prop({ default: 0 })
-  totalDeductions: number;
-
-  @Prop({ default: 0 })
-  finalNetSalary: number;
-
-  // itemized breakdown
   @Prop({
     type: [
       {
         code: String,
         name: String,
-        type: String, // earning / deduction / info
+        type: String,
         amount: Number,
       },
     ],
     default: [],
   })
-  items: {
+  itemizedComponents: {
     code: string;
     name: string;
+    /**
+     * e.g. "allowance", "deduction", "earning", "bonus", "benefit",
+     * "leave_encashment", "unpaid_leave", "tax", "insurance", "penalty", etc.
+     * Sources may be:
+     * - Payroll Configuration & Policy Setup subSystem
+     * - Leaves subSystem
+     * - Time Management subSystem
+     * - Payroll Processing & Execution subSystem
+     */
     type: string;
     amount: number;
   }[];
 
+  // ------------------------------------------------------------
+  // VISIBILITY / STATUS
+  // ------------------------------------------------------------
+
   @Prop({
-    enum: ['generated', 'sent', 'viewed', 'cancelled'],
-    default: 'generated',
+    required: true,
+    enum: ['generated', 'visible_to_employee', 'locked'],
   })
-  status: 'generated' | 'sent' | 'viewed' | 'cancelled';
+  visibilityStatus:
+    | 'generated'
+    | 'visible_to_employee'
+    | 'locked';
 }
 
 export const PayslipSchema = SchemaFactory.createForClass(Payslip);
