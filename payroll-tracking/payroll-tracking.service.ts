@@ -1,11 +1,10 @@
-// src/payroll-tracking/services/payroll-tracking.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import {
   ReimbursementClaim,
-  ReimbursementClaimSchema,
+  ReimbursementClaimDocument,
 } from './schemas/reimbursement-claim.schema';
 import {
   PayrollReport,
@@ -24,6 +23,9 @@ export class PayrollTrackingService {
 
     @InjectModel(PayrollDispute.name)
     private readonly payrollDisputeModel: Model<PayrollDisputeDocument>,
+
+    @InjectModel(ReimbursementClaim.name)
+    private readonly reimbursementClaimModel: Model<ReimbursementClaimDocument>, // Inject ReimbursementClaim model
   ) {}
 
   // =======================
@@ -176,5 +178,10 @@ export class PayrollTrackingService {
     if (!res) {
       throw new NotFoundException(`PayrollDispute with id ${id} not found`);
     }
+  }
+
+  async createReimbursementClaim(data: any): Promise<ReimbursementClaimDocument> {
+    const createdClaim = new this.reimbursementClaimModel(data); // Create a new reimbursement claim
+    return createdClaim.save(); // Save and return the created claim
   }
 }
