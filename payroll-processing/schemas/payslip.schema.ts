@@ -4,9 +4,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
-import { PayrollRunItemDocument } from '../../payroll-processing/schemas/payroll-run-item.schema';
-import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';
+import { PayrollRunDocument } from './payroll-run.schema';
+import { PayrollRunItemDocument } from './payroll-run-item.schema';
+import { EmployeeDocument } from '../../employee-profile/schemas/employee.schema';
 
 export type PayslipDocument = Payslip & Document;
 
@@ -24,7 +24,7 @@ export class Payslip {
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | EmployeeProfileModule; // Employee Profile subsystem
+    | EmployeeDocument; // Employee Profile subsystem
 
   @Prop({ required: true })
   employeeName: string; // snapshot from Employee Profile
@@ -136,10 +136,8 @@ export class Payslip {
     required: true,
     enum: ['generated', 'visible_to_employee', 'locked'],
   })
-  visibilityStatus:
-    | 'generated'
-    | 'visible_to_employee'
-    | 'locked';
+  visibilityStatus: string
+    
 }
 
 export const PayslipSchema = SchemaFactory.createForClass(Payslip);
