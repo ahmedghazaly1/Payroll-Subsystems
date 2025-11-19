@@ -17,15 +17,15 @@ import { PayrollTrackingController } from './payroll-tracking.controller';
 
 @Module({
   imports: [
+    // Register Mongoose models with NestJS
     MongooseModule.forFeature([
-      { name: PayrollDispute.name, schema: PayrollDisputeSchema },
-      { name: ReimbursementClaim.name, schema: ReimbursementClaimSchema },
-      { name: PayrollReport.name, schema: PayrollReportSchema },
+      { name: PayrollDispute.name, schema: PayrollDisputeSchema },  // Register PayrollDispute schema
+      { name: ReimbursementClaim.name, schema: ReimbursementClaimSchema },  // Register ReimbursementClaim schema
+      { name: PayrollReport.name, schema: PayrollReportSchema },  // Register PayrollReport schema
     ]),
   ],
-  controllers: [PayrollTrackingController],
-  providers: [PayrollTrackingService],
-  exports: [MongooseModule, PayrollTrackingService],
+  controllers: [PayrollTrackingController],  // Controller that handles the routes
+  providers: [PayrollTrackingService],  // Service that provides the business logic
+  exports: [PayrollTrackingService],  // Export the service so it can be used elsewhere
 })
 export class PayrollTrackingModule {}
-
