@@ -4,9 +4,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
-import { OrganizationStructureModule } from '../organization-structure/organization-structure.module';  // Organization Structure
-import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';  // Employee Profile subsystem
+import { PayrollRunDocument } from '../../payroll-processing-and-execution/schemas/payroll-run.schema';
+import { DepartmentDocument } from '../../organization-structure/schemas/department.schema';  // Organization Structure
+import { EmployeeDocument } from '../../employee-profile/schemas/employee.schema';  // Employee Profile subsystem
 
 export type PayrollReportDocument = PayrollReport & Document;
 
@@ -42,7 +42,7 @@ export class PayrollReport {
   })
   departmentId?:
     | mongoose.Types.ObjectId
-    | OrganizationStructureModule; // Org Structure subsystem
+    | DepartmentDocument; // Org Structure subsystem
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -50,7 +50,7 @@ export class PayrollReport {
   })
   employeeId?:
     | mongoose.Types.ObjectId
-    | EmployeeProfileModule; // Employee Profile subsystem
+    | EmployeeDocument; // Employee Profile subsystem
   
 
   // Flexible JSON snapshot (aggregated totals, charts, etc.)
