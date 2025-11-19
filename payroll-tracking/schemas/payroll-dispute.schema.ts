@@ -4,10 +4,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import { PayslipDocument } from '../../payroll-processing/schemas/payslip.schema';
-import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
+import { PayslipDocument } from '../../payroll-processing-and-execution/schemas/payslip.schema';
+import { PayrollRunDocument } from '../../payroll-processing-and-execution/schemas/payroll-run.schema';
 // import { UserDocument } from '../../auth/schemas/user.schema';              // Auth / Users subsystem
-import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';  // Employee Profile subsystem
+import { EmployeeDocument } from '../../employee-profile/schemas/employee.schema';  // Employee Profile subsystem
 
 export type PayrollDisputeDocument = PayrollDispute & Document;
 
@@ -25,7 +25,7 @@ export class PayrollDispute {
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | EmployeeProfileModule; // Employee Profile subsystem
+    | EmployeeDocument; // Employee Profile subsystem
 
   @Prop({ required: true })
   employeeName: string; // snapshot from Employee Profile
