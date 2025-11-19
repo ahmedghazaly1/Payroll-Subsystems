@@ -4,8 +4,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 
-import { PayrollRunDocument } from '../../payroll-processing/schemas/payroll-run.schema';
-import { EmployeeProfileModule } from '../employee-profile/employee-profile.module';  // Employee Profile subsystem
+import { PayrollRunDocument } from '../../payroll-processing-and-execution/schemas/payroll-run.schema';
+import { EmployeeDocument } from '../../employee-profile/schemas/employee.schema';  // Employee Profile subsystem
 // import { UserDocument } from '../../auth/schemas/user.schema';             // Auth / Users subsystem
 
 export type ReimbursementClaimDocument = ReimbursementClaim & Document;
@@ -24,7 +24,7 @@ export class ReimbursementClaim {
   })
   employeeId:
     | mongoose.Types.ObjectId
-    | EmployeeProfileModule; // Employee Profile subsystem
+    | EmployeeDocument; // Employee Profile subsystem
 
   @Prop({ required: true })
   employeeName: string; // snapshot from Employee Profile
