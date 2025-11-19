@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { AllowanceDocument } from '../../allowance/schemas/allowance.schema';
+import { AllowanceDocument } from '../schemas/allowance.schema';
 
 export type TaxRuleDocument = TaxRule & Document;
 
